@@ -3,6 +3,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.responses import ORJSONResponse
 
+from src.categories.routers import categories_router
 from src.config import settings
 from src.database import database_manager
 from src.users.routers import auth_router, users_router
@@ -24,6 +25,7 @@ def app_factory() -> FastAPI:
     )
     app.include_router(auth_router)
     app.include_router(users_router)
+    app.include_router(categories_router)
     return app
 
 
