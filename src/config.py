@@ -16,6 +16,9 @@ class AppConfig(BaseModel):
     project_host: str = env.str('PROJECT_HOST')
     project_port: int = env.int('PROJECT_PORT')
 
+    jwt_secret_key: str = env.str('JWT_SECRET_KEY')
+    jwt_algorithm: str = env.str('JWT_ALGORITHM')
+
 
 class DatabaseConfig(BaseModel):
     url: PostgresDsn = env.str('DATABASE_URL')

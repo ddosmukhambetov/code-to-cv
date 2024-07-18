@@ -1,5 +1,14 @@
+from sqlalchemy import MetaData
 from sqlalchemy.orm import DeclarativeBase
+
+from src.config import settings
 
 
 class Base(DeclarativeBase):
-    pass
+    __abstract__ = True
+
+    metadata = MetaData(naming_convention=settings.db.naming_convention)
+
+    def __repr__(self):
+        cols = [f'{col}={getattr(self, col)}' for col in self.__table__.columns.keys()]
+        return f'{self.__class__.__name__}({', '.join(cols)})'

@@ -5,6 +5,7 @@ from fastapi.responses import ORJSONResponse
 
 from src.config import settings
 from src.database import database_manager
+from src.users.routers import auth_router, users_router
 
 
 @asynccontextmanager
@@ -21,6 +22,8 @@ def app_factory() -> FastAPI:
         lifespan=lifespan,
         default_response_class=ORJSONResponse,
     )
+    app.include_router(auth_router)
+    app.include_router(users_router)
     return app
 
 
