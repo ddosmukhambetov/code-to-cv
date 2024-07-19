@@ -1,31 +1,12 @@
 from datetime import datetime
-from typing import Optional, Dict, Any
+from typing import Optional
 
 from pydantic import BaseModel, Field
 
-
-def model_dump(model: BaseModel, *args, **kwargs) -> Dict[str, Any]:
-    return model.model_dump(*args, **kwargs)
+from src.schemas import CreateUpdateDict
 
 
-class CategoryCreateUpdateDictModel(BaseModel):
-    def create_update_dict(self):
-        return model_dump(
-            self,
-            exclude_unset=True,
-            exclude={
-                'id',
-                'is_active',
-                'created_at',
-                'updated_at',
-            },
-        )
-
-    def create_update_dict_superuser(self):
-        return model_dump(self, exclude_unset=True, exclude={"id"})
-
-
-class CategoryCreateSchema(CategoryCreateUpdateDictModel):
+class CategoryCreateSchema(CreateUpdateDict):
     title: str = Field(min_length=4, max_length=255)
     description: Optional[str] = Field(None, min_length=15, max_length=255)
     parent_id: Optional[int] = Field(None, gt=0)
@@ -42,7 +23,7 @@ class CategoryReadSchema(BaseModel):
     updated_at: datetime
 
 
-class CategoryUpdateSchema(CategoryCreateUpdateDictModel):
+class CategoryUpdateSchema(CreateUpdateDict):
     title: Optional[str] = Field(None, min_length=4, max_length=255)
     description: Optional[str] = Field(None, min_length=15, max_length=255)
     parent_id: Optional[int] = Field(None, gt=0)

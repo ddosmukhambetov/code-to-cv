@@ -1,15 +1,13 @@
 import re
 from datetime import datetime
-from typing import Optional, Dict, Any
+from typing import Optional
 
 from pydantic import BaseModel, Field
 
-
-def model_dump(model: BaseModel, *args, **kwargs) -> Dict[str, Any]:
-    return model.model_dump(*args, **kwargs)
+from src.schemas import CreateUpdateDict, model_dump
 
 
-class UserCreateUpdateDictModel(BaseModel):
+class UserCreateUpdateDictModel(CreateUpdateDict):
     def create_update_dict(self):
         return model_dump(
             self,
@@ -22,9 +20,6 @@ class UserCreateUpdateDictModel(BaseModel):
                 'updated_at',
             },
         )
-
-    def create_update_dict_superuser(self):
-        return model_dump(self, exclude_unset=True, exclude={"id"})
 
 
 username_pattern = re.compile(r'^(?=.{4,124}$)(?![_.-])(?!.*[_.]{2})[a-zA-Z0-9._-]+(?<![_.])$')

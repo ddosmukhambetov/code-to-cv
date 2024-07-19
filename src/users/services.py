@@ -70,7 +70,7 @@ class UserService:
         if_self_update = (admin_user_id == user_id)
         return await prepare_and_update_user(
             user_id=user_id,
-            create_update_dict_func=user_data.create_update_dict,
+            create_update_dict_func=user_data.create_update_dict_superuser,
             user_repository=self.user_repository,
             if_self_update=if_self_update,
             response=response,
