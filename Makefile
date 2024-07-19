@@ -24,6 +24,18 @@ app-down:
 app-exec:
 	$(EXEC) $(APP_CONTAINER) bash
 
+.PHONY: app-make-migrations
+app-make-migrations:
+	$(EXEC) $(APP_CONTAINER) bash -c "alembic revision --autogenerate -m 'migration'"
+
+.PHONY: app-migrate
+app-migrate:
+	$(EXEC) $(APP_CONTAINER) bash -c "alembic upgrade head"
+
+.PHONY: app-downgrade-migrations
+app-downgrade-migrations:
+	$(EXEC) $(APP_CONTAINER) bash -c "alembic downgrade base"
+
 .PHONY: app-logs
 app-logs:
 	$(DC) -f $(APP_FILE) $(ENV) logs -f

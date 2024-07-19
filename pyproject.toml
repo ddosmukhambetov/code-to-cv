@@ -16,6 +16,7 @@ alembic = "^1.13.2"
 pyjwt = "^2.8.0"
 passlib = {extras = ["bcrypt"], version = "^1.7.4"}
 python-slugify = "^8.0.4"
+orjson = "^3.10.6"
 
 
 [build-system]
