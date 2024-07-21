@@ -17,6 +17,9 @@ pyjwt = "^2.8.0"
 passlib = {extras = ["bcrypt"], version = "^1.7.4"}
 python-slugify = "^8.0.4"
 orjson = "^3.10.6"
+python-multipart = "^0.0.9"
+sqladmin = "^0.18.0"
+itsdangerous = "^2.2.0"
 
 
 [build-system]

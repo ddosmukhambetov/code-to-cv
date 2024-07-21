@@ -2,7 +2,11 @@ from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 from fastapi.responses import ORJSONResponse
+from sqladmin import Admin
 
+from src.admin_panel.security import authentication_backend
+from src.admin_panel.views import CategoryAdmin
+from src.admin_panel.views import UserAdmin
 from src.categories.routers import categories_router
 from src.config import settings
 from src.database import database_manager
@@ -26,6 +30,11 @@ def app_factory() -> FastAPI:
     app.include_router(auth_router)
     app.include_router(users_router)
     app.include_router(categories_router)
+
+    admin = Admin(app, engine=database_manager.engine, authentication_backend=authentication_backend)
+    admin.add_view(UserAdmin)
+    admin.add_view(CategoryAdmin)
+
     return app
 
 

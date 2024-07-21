@@ -19,6 +19,8 @@ class AppConfig(BaseModel):
     jwt_secret_key: str = env.str('JWT_SECRET_KEY')
     jwt_algorithm: str = env.str('JWT_ALGORITHM')
 
+    sqladmin_secret_key: str = env.str('SQLADMIN_SECRET_KEY')
+
 
 class DatabaseConfig(BaseModel):
     url: PostgresDsn = env.str('DATABASE_URL')
