@@ -1,5 +1,6 @@
 from typing import Annotated
 
+from fastapi import Depends
 from sqladmin.authentication import AuthenticationBackend
 from starlette.requests import Request
 
@@ -30,7 +31,7 @@ class AdminAuth(AuthenticationBackend):
         token = request.session.get('token')
         if not token:
             return False
-        user = Annotated[UserReadSchema, get_current_superuser]
+        user = Annotated[UserReadSchema, Depends(get_current_superuser)]
         if not user:
             return False
         return True

@@ -1,11 +1,15 @@
 from typing import Optional, List
+from typing import TYPE_CHECKING
 
-from slugify import slugify
 from sqlalchemy import String, Integer, ForeignKey, Boolean
 from sqlalchemy.orm import Mapped, mapped_column, relationship, validates
 
 from src.mixins import IntIdMixin, TimeBasedMixin
 from src.models import Base
+from src.utils import generate_slug_with_random_chars
+
+if TYPE_CHECKING:
+    from src.interview_questions.models import Question
 
 
 class Category(IntIdMixin, TimeBasedMixin, Base):
@@ -20,10 +24,12 @@ class Category(IntIdMixin, TimeBasedMixin, Base):
     parent: Mapped['Category'] = relationship(back_populates='children', remote_side='Category.id')
     children: Mapped[List['Category']] = relationship(back_populates='parent')
 
+    questions: Mapped[List['Question']] = relationship(back_populates='category')
+
     @validates('title')
     def generate_slug(self, key, title):
         if not self.slug or self.slug == '':
-            self.slug = slugify(title)
+            self.slug = generate_slug_with_random_chars(title)
         return title
 
     def __str__(self):

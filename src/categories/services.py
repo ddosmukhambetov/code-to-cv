@@ -1,12 +1,11 @@
 from typing import List
 
-from slugify import slugify
-
 from src.categories.exceptions import (CategoryNotFoundException, CategoryAlreadyExistsException,
                                        ParentCategoryNotFoundException, ParentCategoryRecursiveException,
                                        CategoryHasChildrenException)
 from src.categories.repositories import CategoryRepository
 from src.categories.schemas import CategoryReadSchema, CategoryCreateSchema, CategoryUpdateSchema
+from src.utils import generate_slug_with_random_chars
 
 
 class CategoryService:
@@ -46,7 +45,7 @@ class CategoryService:
             existing_category = await self.category_repository.read_one_or_none(title=data_dict.get('title'))
             if existing_category:
                 raise CategoryAlreadyExistsException
-            data_dict['slug'] = slugify(data_dict.get('title'))
+            data_dict['slug'] = generate_slug_with_random_chars(data_dict.get('title'))
 
         if data_dict.get('parent_id'):
             if data_dict.get('parent_id') == category.id:

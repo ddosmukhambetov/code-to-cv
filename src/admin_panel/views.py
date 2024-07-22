@@ -1,12 +1,13 @@
 from typing import Any
 
-from slugify import slugify
 from sqladmin import ModelView
 from starlette.requests import Request
 
 from src.categories.models import Category
+from src.interview_questions.models import Question
 from src.users.models import User
 from src.users.security import get_password_hash
+from src.utils import generate_slug_with_random_chars
 
 
 class UserAdmin(ModelView, model=User):
@@ -34,8 +35,23 @@ class CategoryAdmin(ModelView, model=Category):
     column_details_exclude_list = ('id', 'children', 'parent_id',)
     form_create_rules = ('title', 'description', 'is_active', 'parent',)
     form_edit_rules = ('title', 'description', 'is_active', 'parent',)
-    column_searchable_list = ('id', 'title', 'slug',)
+    column_searchable_list = ('title',)
 
     async def on_model_change(self, data: dict, model: Any, is_created: bool, request: Request) -> None:
-        data['slug'] = slugify(data.get('title'))
+        data['slug'] = generate_slug_with_random_chars(data.get('title'))
+        return await super().on_model_change(data, model, is_created, request)
+
+
+class QuestionAdmin(ModelView, model=Question):
+    name = 'Interview Question'
+    name_plural = 'Interview Questions'
+    icon = 'fa-solid fa-question'
+    column_list = ('id', 'question', 'slug', 'is_active', 'category', 'created_at', 'updated_at',)
+    column_details_exclude_list = ('id', 'category_id',)
+    form_create_rules = ('question', 'short_answer', 'full_answer', 'is_active', 'category',)
+    form_edit_rules = ('question', 'short_answer', 'full_answer', 'is_active', 'category',)
+    column_searchable_list = ('question',)
+
+    async def on_model_change(self, data: dict, model: Any, is_created: bool, request: Request) -> None:
+        data['slug'] = generate_slug_with_random_chars(data.get('question'))
         return await super().on_model_change(data, model, is_created, request)
