@@ -1,0 +1,54 @@
+import json
+
+from openai import OpenAI
+
+from src.config import settings
+from src.cv.exceptions import InvalidProfileLinkException
+from src.cv.repositories import CvRepository
+from src.cv.utils import collect_all_data_from_github
+
+
+class CvService:
+    def __init__(self, cv_repository: CvRepository):
+        self.cv_repository: CvRepository = cv_repository
+
+    @staticmethod
+    async def generate_cv_text(profile_link: str) -> str:
+        if profile_link.startswith('https://github.com/'):
+            username = profile_link.split('/')[-1]
+        else:
+            raise InvalidProfileLinkException
+        github_user_data = await collect_all_data_from_github(username)
+
+        system_prompt = f"""
+        You are a CV (Resume) generator designed to output JSON.
+        You will create a professional CV for the following user based on their GitHub profile and repositories.
+        The resume should be written in the first person, as if the user is writing it themselves.
+        Ensure the content is concise and fits within one page.
+        Make sure to include the following sections:
+        1. Personal Information
+        2. Skills (If provided, else generate them)
+        3. Projects (If no description provided, generate a short description, add used tools and technologies)
+        4. Experience (If provided, else generate a description of experience)
+        5. Disclaimer (State that the resume was generated using AI technology)
+        
+        ## Personal Information
+        - **Name:** {github_user_data.get('name', 'login')}
+        - **Link to GitHub profile:** {github_user_data.get('html_url')})
+        - **Bio:** {github_user_data.get('bio')} (If provided, else generate them)
+        - **Location:** {github_user_data.get('location')} (If provided, else skip)
+        - **Speaking languages:** (If provided, else generate them)
+        - **Contact Information** (Contact information includes email or social media links. If provided, else skip)
+        """
+
+        client = OpenAI(api_key=settings.app.openai_api_key)
+        completion = client.chat.completions.create(
+            model="gpt-4o",
+            response_format={'type': 'json_object'},
+            messages=[
+                {"role": "system", "content": system_prompt},
+                {"role": "user", "content": json.dumps(github_user_data)},
+            ],
+            temperature=0.7,
+        )
+        return completion.choices[0].message.content

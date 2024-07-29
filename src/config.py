@@ -21,6 +21,9 @@ class AppConfig(BaseModel):
 
     sqladmin_secret_key: str = env.str('SQLADMIN_SECRET_KEY')
 
+    github_pat_token: str = env.str('GITHUB_PA_TOKEN')
+    openai_api_key: str = env.str('OPENAI_API_KEY')
+
 
 class DatabaseConfig(BaseModel):
     url: PostgresDsn = env.str('DATABASE_URL')

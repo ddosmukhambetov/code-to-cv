@@ -20,6 +20,8 @@ orjson = "^3.10.6"
 python-multipart = "^0.0.9"
 sqladmin = "^0.18.0"
 itsdangerous = "^2.2.0"
+httpx = "^0.27.0"
+openai = "^1.37.1"
 
 
 [build-system]
