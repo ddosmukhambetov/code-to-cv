@@ -1,6 +1,6 @@
 import json
 
-from openai import OpenAI
+from openai import AsyncOpenAI
 
 from src.config import settings
 from src.cv.exceptions import InvalidProfileLinkException
@@ -27,10 +27,11 @@ class CvService:
         Ensure the content is concise and fits within one page.
         Make sure to include the following sections:
         1. Personal Information
-        2. Skills (If provided, else generate them)
-        3. Projects (If no description provided, generate a short description, add used tools and technologies)
-        4. Experience (If provided, else generate a description of experience)
-        5. Disclaimer (State that the resume was generated using AI technology)
+        2. About Me (If provided, else generate them)
+        3. Skills (If provided, else generate them)
+        4. Projects (If no description provided, generate a short description, add used tools and technologies)
+        5. Experience (If provided, else generate a description of experience)
+        6. Disclaimer (State that the resume was generated using AI technology)
         
         ## Personal Information
         - **Name:** {github_user_data.get('name', 'login')}
@@ -41,8 +42,8 @@ class CvService:
         - **Contact Information** (Contact information includes email or social media links. If provided, else skip)
         """
 
-        client = OpenAI(api_key=settings.app.openai_api_key)
-        completion = client.chat.completions.create(
+        client = AsyncOpenAI(api_key=settings.app.openai_api_key)
+        completion = await client.chat.completions.create(
             model="gpt-4o",
             response_format={'type': 'json_object'},
             messages=[
@@ -51,4 +52,5 @@ class CvService:
             ],
             temperature=0.7,
         )
-        return completion.choices[0].message.content
+        response_content = completion.choices[0].message.content
+        return json.loads(response_content)

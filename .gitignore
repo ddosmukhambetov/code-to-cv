@@ -6,3 +6,5 @@ __pycache__/
 
 .env
 .env.local
+
+scrapped_data/
