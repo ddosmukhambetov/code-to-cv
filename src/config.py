@@ -1,3 +1,5 @@
+import uuid
+from datetime import datetime
 from pathlib import Path
 
 from environs import Env
@@ -41,9 +43,23 @@ class DatabaseConfig(BaseModel):
     }
 
 
+class MediaConfig(BaseModel):
+    media_path: str = BASE_DIR / 'media'
+
+    def get_cv_file_path(self, user_id: int) -> Path:
+        now = datetime.now()
+        year, month, day = now.year, now.month, now.day
+        random_uuid = uuid.uuid4()
+        relative_path = Path(f'{year}/{month}/{day}/cv_{user_id}_{random_uuid}.pdf')
+        full_path = self.media_path / relative_path
+        full_path.parent.mkdir(parents=True, exist_ok=True)
+        return full_path
+
+
 class Settings:
     app: AppConfig = AppConfig()
     db: DatabaseConfig = DatabaseConfig()
+    media: MediaConfig = MediaConfig()
 
 
 settings = Settings()

@@ -8,3 +8,4 @@ __pycache__/
 .env.local
 
 scrapped_data/
+media/

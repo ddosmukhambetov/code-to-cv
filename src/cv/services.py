@@ -5,7 +5,7 @@ from openai import AsyncOpenAI
 from src.config import settings
 from src.cv.exceptions import InvalidProfileLinkException
 from src.cv.repositories import CvRepository
-from src.cv.utils import collect_all_data_from_github
+from src.cv.utils import collect_all_data_from_github, generate_pdf_file
 
 
 class CvService:
@@ -13,7 +13,7 @@ class CvService:
         self.cv_repository: CvRepository = cv_repository
 
     @staticmethod
-    async def generate_cv_text(profile_link: str) -> str:
+    async def generate_cv_text(profile_link: str) -> dict:
         if profile_link.startswith('https://github.com/'):
             username = profile_link.split('/')[-1]
         else:
@@ -54,3 +54,14 @@ class CvService:
         )
         response_content = completion.choices[0].message.content
         return json.loads(response_content)
+
+    async def generate_cv_pdf(self, profile_link: str, user_id: int):
+        cv_text = await self.generate_cv_text(profile_link=profile_link)
+        output_path = settings.media.get_cv_file_path(user_id=user_id)
+        generate_pdf_file(cv_data=cv_text, output_path=str(output_path))
+        return await self.cv_repository.create_one(
+            profile_link=profile_link,
+            cv_data=cv_text,
+            file_path=str(output_path),
+            user_id=user_id,
+        )

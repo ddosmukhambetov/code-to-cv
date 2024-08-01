@@ -1,8 +1,13 @@
+from typing import TYPE_CHECKING, List
+
 from sqlalchemy import String, Boolean
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from src.mixins import IntIdMixin, TimeBasedMixin
 from src.models import Base
+
+if TYPE_CHECKING:
+    from src.cv.models import Cv
 
 
 class User(IntIdMixin, TimeBasedMixin, Base):
@@ -12,6 +17,8 @@ class User(IntIdMixin, TimeBasedMixin, Base):
     hashed_password: Mapped[str] = mapped_column(String(1024))
     is_active: Mapped[bool] = mapped_column(Boolean, default=True)
     is_superuser: Mapped[bool] = mapped_column(Boolean, default=False)
+
+    cvs: Mapped[List['Cv']] = relationship(back_populates='user')
 
     def __str__(self):
         return self.username
