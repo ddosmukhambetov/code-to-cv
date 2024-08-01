@@ -1,14 +1,16 @@
 import asyncio
+import sys
 from pathlib import Path
 
 from environs import Env
 
+BASE_DIR = Path(__file__).resolve().parent.parent.parent.parent
+sys.path.append(str(BASE_DIR))
+
+from src.users.exceptions import UserAlreadyExistsException
 from src.users.repositories import UserRepository
 from src.users.schemas import UserCreateSchema
-from src.users.exceptions import UserAlreadyExistsException
 from src.users.security import get_password_hash
-
-BASE_DIR = Path(__file__).resolve().parent.parent.parent.parent
 
 env = Env()
 env.read_env(str(BASE_DIR / '.env'))

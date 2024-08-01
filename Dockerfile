@@ -5,7 +5,12 @@ ENV PYTHONDONTWRITEBYTECODE=1
 
 WORKDIR /src
 
-RUN apt-get update && apt-get install -y python3-dev
+RUN apt-get update && apt-get install -y  \
+    python3-dev \
+    build-essential \
+    libpango-1.0-0 \
+    libharfbuzz0b \
+    libpangoft2-1.0-0
 
 RUN pip install --upgrade pip
 RUN pip install poetry

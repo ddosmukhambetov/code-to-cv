@@ -36,6 +36,10 @@ app-migrate:
 app-downgrade-migrations:
 	$(EXEC) $(APP_CONTAINER) bash -c "alembic downgrade base"
 
+.PHONY: app-create-superuser
+app-create-superuser:
+	$(EXEC) $(APP_CONTAINER) bash -c "python3 src/users/actions/create_super_user.py"
+
 .PHONY: app-logs
 app-logs:
 	$(DC) -f $(APP_FILE) $(ENV) logs -f
