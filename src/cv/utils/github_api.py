@@ -50,7 +50,6 @@ async def fetch_user_and_repos(client: httpx.AsyncClient, username: str) -> Tupl
         filtered_user_data = remove_none_values(
             {
                 'login': user_data.get('login'),
-                'avatar_url': user_data.get('avatar_url'),
                 'html_url': user_data.get('html_url'),
                 'repos_url': user_data.get('repos_url'),
                 'name': user_data.get('name'),
