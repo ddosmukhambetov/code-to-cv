@@ -59,10 +59,11 @@ class CvService:
 
     async def generate_cv_pdf(self, profile_link: str, user_id: int):
         cv_data = await self.generate_cv_text(profile_link=profile_link)
-        output_path = generate_pdf_file(cv_data=cv_data)
+        file_name, output_path = generate_pdf_file(cv_data=cv_data)
         return await self.cv_repository.create_one(
             profile_link=profile_link,
+            file_name=file_name,
+            file_path=output_path,
             cv_data=cv_data,
-            file_path=str(output_path),
             user_id=user_id,
         )

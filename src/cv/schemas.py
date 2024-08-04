@@ -6,6 +6,7 @@ from pydantic import BaseModel
 class CvReadSchema(BaseModel):
     id: int
     profile_link: str
+    file_name: str
     file_path: str
     is_active: bool
     user_id: int

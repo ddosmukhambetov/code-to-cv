@@ -14,6 +14,7 @@ class Cv(IntIdMixin, TimeBasedMixin, Base):
     __tablename__ = 'cvs'
 
     profile_link: Mapped[str] = mapped_column(String, index=True)
+    file_name: Mapped[str] = mapped_column(String)
     file_path: Mapped[str] = mapped_column(String)
     is_active: Mapped[bool] = mapped_column(Boolean, default=True)
     cv_data: Mapped[JSON] = mapped_column(JSON)
