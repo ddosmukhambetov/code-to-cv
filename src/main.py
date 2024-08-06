@@ -5,7 +5,7 @@ from fastapi.responses import ORJSONResponse
 from sqladmin import Admin
 
 from src.admin_panel.security import authentication_backend
-from src.admin_panel.views import UserAdmin, CategoryAdmin, QuestionAdmin
+from src.admin_panel.views import UserAdmin, CategoryAdmin, QuestionAdmin, CvAdmin
 from src.categories.routers import categories_router
 from src.config import settings
 from src.cv.routers import cv_router
@@ -38,6 +38,7 @@ def app_factory() -> FastAPI:
     admin.add_view(UserAdmin)
     admin.add_view(CategoryAdmin)
     admin.add_view(QuestionAdmin)
+    admin.add_view(CvAdmin)
 
     return app
 

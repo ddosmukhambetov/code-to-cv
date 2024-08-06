@@ -1,6 +1,6 @@
 from typing import TYPE_CHECKING
 
-from sqlalchemy import String, Text, Integer, ForeignKey, Boolean, JSON
+from sqlalchemy import String, Integer, ForeignKey, Boolean, JSON
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from src.mixins import IntIdMixin, TimeBasedMixin

@@ -24,3 +24,8 @@ InternalServerError = HTTPException(
     status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
     detail='500_INTERNAL_SERVER_ERROR',
 )
+
+CvNotFoundException = HTTPException(
+    status_code=status.HTTP_404_NOT_FOUND,
+    detail='404_CV_NOT_FOUND',
+)
