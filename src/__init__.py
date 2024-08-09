@@ -7,5 +7,5 @@ __all__ = (
 
 from src.users import User
 from src.categories import Category
-from src.interview_questions import Question
-from src.cv import Cv
+from src.interview_simulations import Question
+from src.cvs import Cv

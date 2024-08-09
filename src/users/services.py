@@ -48,11 +48,12 @@ class UserService:
             response=response,
         )
 
-    async def user_delete_me(self, current_user_id: int) -> None:
+    async def user_delete_me(self, current_user_id: int, response: Response) -> None:
         user = await self.user_repository.read_by_id_or_none(current_user_id)
         if not user:
             raise UserNotPresentException
         await self.user_repository.delete_by_id(current_user_id)
+        response.delete_cookie('code-to-cv-token')
 
     async def admin_get_user(self, user_id: int):
         user = await self.user_repository.read_by_id_or_none(user_id)

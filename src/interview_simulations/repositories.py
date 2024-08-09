@@ -1,4 +1,4 @@
-from src.interview_questions.models import Question
+from src.interview_simulations.models import Question
 from src.repositories import SQLAlchemyRepository
 
 

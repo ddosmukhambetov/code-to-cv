@@ -18,7 +18,7 @@ class Cv(IntIdMixin, TimeBasedMixin, Base):
     file_path: Mapped[str] = mapped_column(String)
     is_active: Mapped[bool] = mapped_column(Boolean, default=True)
     cv_data: Mapped[JSON] = mapped_column(JSON)
-    user_id: Mapped[int] = mapped_column(Integer, ForeignKey('users.id'))
+    user_id: Mapped[int] = mapped_column(Integer, ForeignKey('users.id', ondelete='CASCADE'))
 
     user: Mapped['User'] = relationship(back_populates='cvs')
 

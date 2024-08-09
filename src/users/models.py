@@ -7,7 +7,7 @@ from src.mixins import IntIdMixin, TimeBasedMixin
 from src.models import Base
 
 if TYPE_CHECKING:
-    from src.cv.models import Cv
+    from src.cvs.models import Cv
 
 
 class User(IntIdMixin, TimeBasedMixin, Base):

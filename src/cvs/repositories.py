@@ -1,4 +1,4 @@
-from src.cv.models import Cv
+from src.cvs.models import Cv
 from src.repositories import SQLAlchemyRepository
 
 

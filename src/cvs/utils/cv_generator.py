@@ -6,9 +6,9 @@ from openai import AsyncOpenAI
 from weasyprint import HTML
 
 from src.config import settings
-from src.cv.exceptions import InternalServerError, InvalidProfileLinkException
-from src.cv.utils.github_api import collect_all_data_from_github
-from templates.cv.prompt import cv_system_prompt
+from src.cvs.exceptions import InternalServerError, InvalidProfileLinkException
+from src.cvs.utils.github_api import collect_all_data_from_github
+from templates.cvs.prompt import cv_system_prompt
 
 
 async def generate_cv_text(profile_link: str) -> dict:
@@ -40,7 +40,7 @@ async def generate_cv_text(profile_link: str) -> dict:
 
 
 def generate_html_from_json(cv_data: Dict) -> str:
-    env = Environment(loader=FileSystemLoader('templates/cv'))
+    env = Environment(loader=FileSystemLoader('templates/cvs'))
     template = env.get_template('pdf.html')
     return template.render(cv_data=cv_data)
 

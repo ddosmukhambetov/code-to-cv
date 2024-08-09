@@ -13,14 +13,14 @@ if TYPE_CHECKING:
 
 
 class Question(IntIdMixin, TimeBasedMixin, Base):
-    __tablename__ = 'interview_questions'
+    __tablename__ = 'interview_simulations'
 
     question: Mapped[str] = mapped_column(String(512), unique=True)
     short_answer: Mapped[str] = mapped_column(String(1024))
     full_answer: Mapped[str] = mapped_column(String(2048), nullable=True)
     slug: Mapped[str] = mapped_column(String, unique=True, index=True)
     is_active: Mapped[bool] = mapped_column(Boolean, default=True)
-    category_id: Mapped[int] = mapped_column(Integer, ForeignKey('categories.id'))
+    category_id: Mapped[int] = mapped_column(Integer, ForeignKey('categories.id', ondelete='CASCADE'))
 
     category: Mapped['Category'] = relationship(back_populates='questions')
 

@@ -4,8 +4,8 @@ from sqladmin import ModelView
 from starlette.requests import Request
 
 from src.categories.models import Category
-from src.cv.models import Cv
-from src.interview_questions.models import Question
+from src.cvs.models import Cv
+from src.interview_simulations.models import Question
 from src.users.models import User
 from src.users.security import get_password_hash
 from src.utils import generate_slug_with_random_chars

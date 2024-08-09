@@ -8,9 +8,9 @@ from src.admin_panel.security import authentication_backend
 from src.admin_panel.views import UserAdmin, CategoryAdmin, QuestionAdmin, CvAdmin
 from src.categories.routers import categories_router
 from src.config import settings
-from src.cv.routers import cv_router
+from src.cvs.routers import cvs_router
 from src.database import database_manager
-from src.interview_questions.routers import questions_router
+from src.interview_simulations.routers import questions_router
 from src.users.routers import auth_router, users_router
 
 
@@ -32,7 +32,7 @@ def app_factory() -> FastAPI:
     app.include_router(users_router)
     app.include_router(categories_router)
     app.include_router(questions_router)
-    app.include_router(cv_router)
+    app.include_router(cvs_router)
 
     admin = Admin(app, engine=database_manager.engine, authentication_backend=authentication_backend)
     admin.add_view(UserAdmin)

@@ -5,7 +5,7 @@ from typing import Dict, List, Optional, Tuple
 import httpx
 
 from src.config import settings
-from src.cv.exceptions import InternalServerError, GitHubFailedToFetchException
+from src.cvs.exceptions import InternalServerError, GitHubFailedToFetchException
 
 github_api_url = 'https://api.github.com'
 headers = httpx.Headers({'Authorization': f'Bearer {settings.app.github_pat_token}'})

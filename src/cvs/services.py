@@ -3,10 +3,10 @@ from typing import Annotated, List
 from fastapi import Depends
 from fastapi.responses import FileResponse
 
-from src.cv.exceptions import CvNotFoundException
-from src.cv.repositories import CvRepository
-from src.cv.schemas import CvReadSchema
-from src.cv.utils.cv_generator import generate_pdf_file, generate_cv_text
+from src.cvs.exceptions import CvNotFoundException
+from src.cvs.repositories import CvRepository
+from src.cvs.schemas import CvReadSchema
+from src.cvs.utils.cv_generator import generate_pdf_file, generate_cv_text
 from src.users.dependencies import get_current_user
 from src.users.exceptions import PermissionDenied
 from src.users.schemas import UserReadSchema
@@ -33,12 +33,6 @@ class CvService:
             raise CvNotFoundException
         return cvs
 
-    async def get_user_cvs(self, user_id: int) -> List[CvReadSchema]:
-        cv = await self.cv_repository.read_all(user_id=user_id)
-        if not cv:
-            raise CvNotFoundException
-        return cv
-
     async def get_my_cvs(self, current_user_id: int) -> List[CvReadSchema]:
         cvs = await self.cv_repository.read_all(user_id=current_user_id)
         if not cvs:
@@ -51,7 +45,7 @@ class CvService:
             raise CvNotFoundException
         return cv
 
-    async def download_cv(
+    async def download_cv_by_id(
             self,
             cv_id: int,
             current_user: Annotated[UserReadSchema, Depends(get_current_user)],

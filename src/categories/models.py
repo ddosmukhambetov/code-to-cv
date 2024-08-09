@@ -9,7 +9,7 @@ from src.models import Base
 from src.utils import generate_slug_with_random_chars
 
 if TYPE_CHECKING:
-    from src.interview_questions.models import Question
+    from src.interview_simulations.models import Question
 
 
 class Category(IntIdMixin, TimeBasedMixin, Base):

@@ -2,9 +2,9 @@ from typing import List
 
 from src.categories.exceptions import CategoryNotFoundException
 from src.categories.repositories import CategoryRepository
-from src.interview_questions.exceptions import QuestionAlreadyExistsException, QuestionNotFoundException
-from src.interview_questions.repositories import QuestionRepository
-from src.interview_questions.schemas import QuestionCreateSchema, QuestionReadSchema, QuestionUpdateSchema
+from src.interview_simulations.exceptions import QuestionAlreadyExistsException, QuestionNotFoundException
+from src.interview_simulations.repositories import QuestionRepository
+from src.interview_simulations.schemas import QuestionCreateSchema, QuestionReadSchema, QuestionUpdateSchema
 from src.utils import generate_slug_with_random_chars
 
 
