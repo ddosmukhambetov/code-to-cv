@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "code-to-cv"
+version = "0.0.1"
+description = ""
+authors = ["ddos <ddosmukhambetov@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+fastapi = {extras = ["all"], version = "^0.112.0"}
+environs = "^11.0.0"
+sqlalchemy = {extras = ["asyncio"], version = "^2.0.32"}
+asyncpg = "^0.29.0"
+alembic = "^1.13.2"
+pyjwt = "^2.9.0"
+passlib = {extras = ["bcrypt"], version = "^1.7.4"}
+sqladmin = {extras = ["full"], version = "^0.18.0"}
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
