@@ -1,3 +1,5 @@
+import uuid
+from datetime import datetime
 from pathlib import Path
 
 from environs import Env
@@ -43,11 +45,32 @@ class SqlAdminConfig(BaseModel):
     sqladmin_secret_key: str = env.str('SQLADMIN_SECRET_KEY')
 
 
+class ApiKeysConfig(BaseModel):
+    github_pat: str = env.str('GITHUB_PAT')
+    openai_key: str = env.str('OPENAI_API_KEY')
+
+
+class MediaConfig(BaseModel):
+    media_path: str = BASE_DIR / 'media'
+
+    @property
+    def get_cv_pdf_file_path(self) -> str:
+        now = datetime.now()
+        year, month, day = now.year, now.month, now.day
+        random_uuid = uuid.uuid4()
+        relative_path = Path(f'cvs/{year}/{month}/{day}/cv_{random_uuid}.pdf')
+        full_path = self.media_path / relative_path
+        full_path.parent.mkdir(parents=True, exist_ok=True)
+        return str(full_path)
+
+
 class Settings:
     app: AppConfig = AppConfig()
     db: DatabaseConfig = DatabaseConfig()
     auth: AuthConfig = AuthConfig()
     admin: SqlAdminConfig = SqlAdminConfig()
+    api_keys: ApiKeysConfig = ApiKeysConfig()
+    media: MediaConfig = MediaConfig()
 
 
 settings = Settings()

@@ -1,7 +1,7 @@
 import re
-import uuid
 from datetime import datetime
 from typing import Optional
+from uuid import UUID
 
 from pydantic import BaseModel, Field, EmailStr
 
@@ -16,7 +16,7 @@ class UserCreateSchema(BaseModel):
 
 
 class UserReadSchema(BaseModel):
-    uuid: uuid.UUID
+    uuid: UUID
     username: str
     email: EmailStr
     is_active: bool

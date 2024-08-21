@@ -12,8 +12,8 @@ from app.users.schemas import UserCreateSchema, UserReadSchema, AccessTokenSchem
 
 
 class UserService:
-    def __init__(self, user_repo: UserRepo):
-        self.user_repo = user_repo
+    def __init__(self, user_repo: type[UserRepo]):
+        self.user_repo: UserRepo = user_repo()
 
     async def register(self, user_data: UserCreateSchema) -> UserReadSchema:
         existing_user = await self.user_repo.check_existing_user(username=user_data.username, email=user_data.email)
@@ -58,20 +58,20 @@ class UserService:
         response.delete_cookie(key='access-token')
 
     async def get_user_by_username(self, username: str):
-        user = await self.user_repo.get_one_or_none_without_active_true(username=username)
+        user = await self.user_repo.get_one_or_none(username=username)
         if not user:
             raise NotFoundException('User')
         return user
 
     async def update_user_by_username(self, username: str, user_data: AdminUserUpdateSchema) -> UserReadSchema:
-        user = await self.user_repo.get_one_or_none_without_active_true(username=username)
+        user = await self.user_repo.get_one_or_none(username=username)
         if not user:
             raise NotFoundException('User')
         user = await self.user_repo.update_by_uuid(object_uuid=user.uuid, **user_data.model_dump(exclude_unset=True))
         return user
 
     async def delete_user_by_username(self, username: str) -> None:
-        user = await self.user_repo.get_one_or_none_without_active_true(username=username)
+        user = await self.user_repo.get_one_or_none(username=username)
         if not user:
             raise NotFoundException('User')
         await self.user_repo.delete_by_uuid(object_uuid=user.uuid)

@@ -19,7 +19,7 @@ async def get_token(request: Request) -> str:
 async def get_current_user(token: Annotated[str, Depends(get_token)]) -> UserReadSchema:
     data = await decode_json_web_token(token=token)
     username = data.get('username')
-    if user := await UserRepo.get_one_or_none(username=username):
+    if user := await UserRepo.get_one_or_none(username=username, is_active=True):
         return user
     raise NotFoundException('User')
 

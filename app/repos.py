@@ -21,10 +21,6 @@ class BaseAbstractRepository(ABC):
         pass
 
     @abstractmethod
-    async def get_one_or_none_without_active_true(self, **kwargs):
-        pass
-
-    @abstractmethod
     async def update_by_uuid(self, object_uuid: uuid.UUID, **kwargs):
         pass
 
@@ -47,19 +43,12 @@ class SQLAlchemyRepository(BaseAbstractRepository):
     @classmethod
     async def get_all(cls, **kwargs):
         async with database_manager.session() as session:
-            query = select(cls.model).order_by(desc(cls.model.created_at)).filter_by(is_active=True, **kwargs)
+            query = select(cls.model).order_by(desc(cls.model.created_at)).filter_by(**kwargs)
             result = await session.execute(query)
             return result.scalars().all()
 
     @classmethod
     async def get_one_or_none(cls, **kwargs):
-        async with database_manager.session() as session:
-            query = select(cls.model).filter_by(is_active=True, **kwargs)
-            result = await session.execute(query)
-            return result.scalar_one_or_none()
-
-    @classmethod
-    async def get_one_or_none_without_active_true(cls, **kwargs):
         async with database_manager.session() as session:
             query = select(cls.model).filter_by(**kwargs)
             result = await session.execute(query)

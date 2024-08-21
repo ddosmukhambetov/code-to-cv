@@ -14,7 +14,7 @@ def get_password_hash(password: str) -> str:
 
 
 async def authenticate_user(username: str, password: str):
-    user = await UserRepo.get_one_or_none(username=username)
+    user = await UserRepo.get_one_or_none(username=username, is_active=True)
     if not user or not verify_password(password, user.password):
         return None
     return user

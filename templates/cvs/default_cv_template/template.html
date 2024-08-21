@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Generated CV</title>
+
+    <link rel="stylesheet" href="templates/cvs/default_cv_template/style.css" type="text/css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+    <!-- Header -->
+    <div class="header">
+        <div class="name">
+            <i class="fa-regular fa-user"></i>
+            {{ cv_data.personal_information.name }}
+        </div>
+        <div class="contact-info">
+            <div>
+                <i class="fa-brands fa-github"></i>
+                GitHub: <a href="{{ cv_data.personal_information.github_profile_link }}">
+                {{ cv_data.personal_information.github_profile_link }}</a>
+            </div>
+            <div>
+                <i class="fa-solid fa-language"></i>
+                Languages: {{ cv_data.personal_information.speaking_languages }}
+            </div>
+            {% if cv_data.personal_information.location and cv_data.personal_information.location not in ['None',
+            'Null', 'N/A', 'none', 'null', 'n/a', ''] %}
+                <div>
+                    <i class="fa-solid fa-location-dot"></i>
+                    Location: {{ cv_data.personal_information.location }}
+                </div>
+            {% endif %}
+            {% if cv_data.personal_information.contact_information and cv_data.personal_information.contact_information
+            not in ['None', 'Null', 'N/A', 'none', 'null', 'n/a', ''] %}
+                <div>
+                    <i class="fa-solid fa-phone"></i>
+                    Contact: {{ cv_data.personal_information.contact_information }}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- About Me -->
+    <div class="section">
+        <div class="section-title">About Me</div>
+        <p>{{ cv_data.about_me.about_me }}</p>
+    </div>
+
+    <!-- Skills -->
+    <div class="section">
+        <div class="section-title">Skills</div>
+        <div class="skills">
+            <div class="left">
+                <strong>Technical Skills:</strong>
+                <div>
+                    {% for skill in cv_data.about_me.technical_skills %}
+                        <span class="badge">{{ skill }}</span>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="right">
+                <strong>Soft Skills:</strong>
+                <div>
+                    {% for skill in cv_data.about_me.soft_skills %}
+                        <span class="badge">{{ skill }}</span>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Projects -->
+    <div class="section">
+        <div class="section-title">Projects</div>
+        <div class="projects-grid">
+            {% for project in cv_data.projects[:4] %}
+                <div class="project-item">
+                    <div class="project-name"><a href="{{ project.project_link }}">{{ project.name }}</a></div>
+                    <div>{{ project.description }}</div>
+                    <div><strong>Achievements:</strong> {{ project.achievements }}</div>
+                    <div class="technologies">
+                        <strong>Technologies:</strong>
+                        {% for tech in project.technologies %}
+                            <span class="badge-secondary">{{ tech }}</span>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Experience -->
+    <div class="section">
+        <div class="section-title">Experience</div>
+        <div class="experience">
+            <ul>
+                {% for job in cv_data.experience %}
+                    <li>
+                        <div class="role">{{ job.role }} - {{ job.duration }}</div>
+                        <div>{{ job.description }}</div>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+    <!-- Disclaimer -->
+    <div class="disclaimer">
+        {{ cv_data.disclaimer.disclaimer }}
+    </div>
+</div>
+</body>
+</html>

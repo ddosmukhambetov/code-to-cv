@@ -1,11 +1,18 @@
-FROM python:3.12-slim-bullseye
+FROM python:3.12-slim
 
 ENV PYTHONUNBUFFERED=1
 ENV PYTHONDONTWRITEBYTECODE=1
 
 WORKDIR /app
 
-RUN apt-get update && apt-get install -y python3-dev build-essential
+RUN apt-get update && apt-get install -y python3-dev \
+    build-essential \
+    gcc \
+    musl-dev \
+    libpango-1.0-0 \
+    libharfbuzz0b \
+    libpangoft2-1.0-0 \
+    libharfbuzz-subset0
 
 RUN pip install --upgrade pip
 RUN pip install poetry
