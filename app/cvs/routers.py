@@ -5,6 +5,7 @@ from fastapi import APIRouter, status
 from fastapi.params import Depends
 from fastapi.responses import FileResponse
 
+from app.cvs.dependencies import validate_cv_template_name
 from app.cvs.repos import CvRepo
 from app.cvs.schemas import CvReadSchema
 from app.cvs.services import CvService
@@ -17,9 +18,14 @@ router = APIRouter(prefix='/cvs', tags=['CVs'])
 @router.post('/generate', status_code=status.HTTP_201_CREATED, summary='Generate CV')
 async def generate_cv_pdf(
         profile_link: str,
+        template_name: Annotated[str, Depends(validate_cv_template_name)],
         current_user: Annotated[UserReadSchema, Depends(get_current_user)],
 ) -> CvReadSchema:
-    return await CvService(CvRepo).generate_cv_pdf(profile_link=profile_link, user_uuid=current_user.uuid)
+    return await CvService(CvRepo).generate_cv_pdf(
+        profile_link=profile_link,
+        template_name=template_name,
+        user_uuid=current_user.uuid
+    )
 
 
 @router.get('/all', status_code=status.HTTP_200_OK, summary='Get all CVs')

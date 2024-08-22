@@ -16,13 +16,13 @@ class CvService:
     def __init__(self, cv_repo: type[CvRepo]):
         self.cv_repo: CvRepo = cv_repo()
 
-    async def generate_cv_pdf(self, profile_link: str, user_uuid: uuid.UUID) -> CvReadSchema:
+    async def generate_cv_pdf(self, profile_link: str, template_name: str, user_uuid: uuid.UUID) -> CvReadSchema:
         if profile_link.startswith('https://github.com/'):
             username = profile_link.split('/')[-1]
         else:
             raise InvalidProfileLinkException
         cv_generated_data = await generate_cv_data(username=username)
-        cv_generated_pdf_path = generate_cv_pdf_from_html(cv_data=cv_generated_data)
+        cv_generated_pdf_path = generate_cv_pdf_from_html(cv_data=cv_generated_data, template_name=template_name)
         return await self.cv_repo.create_one(
             github_profile_link=profile_link,
             filename=cv_generated_pdf_path.split('/')[-1],

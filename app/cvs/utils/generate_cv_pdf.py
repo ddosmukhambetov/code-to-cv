@@ -44,15 +44,15 @@ async def generate_cv_data(username: str) -> dict:
     return json.loads(response_content)
 
 
-def generate_cv_html_from_json(template_name: str, cv_data: Dict) -> str:
+def generate_cv_html_from_json(cv_data: Dict, template_name: str) -> str:
     template_dir = BASE_DIR / 'templates' / 'cvs' / template_name
     env = Environment(loader=FileSystemLoader(template_dir))
     template = env.get_template('template.html')
     return template.render(cv_data=cv_data)
 
 
-def generate_cv_pdf_from_html(cv_data: Dict) -> str:
-    html_content = generate_cv_html_from_json(template_name='default_cv_template', cv_data=cv_data)
+def generate_cv_pdf_from_html(cv_data: Dict, template_name: str) -> str:
+    html_content = generate_cv_html_from_json(template_name=template_name, cv_data=cv_data)
     output_path = settings.media.get_cv_pdf_file_path
     try:
         HTML(string=html_content, base_url=BASE_DIR).write_pdf(output_path)

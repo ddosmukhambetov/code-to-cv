@@ -52,6 +52,7 @@ class ApiKeysConfig(BaseModel):
 
 class MediaConfig(BaseModel):
     media_path: str = BASE_DIR / 'media'
+    cv_templates_path: str = BASE_DIR / 'templates' / 'cvs'
 
     @property
     def get_cv_pdf_file_path(self) -> str:
