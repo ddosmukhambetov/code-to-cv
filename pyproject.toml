@@ -17,6 +17,7 @@ passlib = {extras = ["bcrypt"], version = "^1.7.4"}
 sqladmin = {extras = ["full"], version = "^0.18.0"}
 openai = "^1.41.0"
 weasyprint = "^62.3"
+redis = "^5.0.8"
 
 
 [build-system]

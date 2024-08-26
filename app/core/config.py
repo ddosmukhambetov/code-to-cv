@@ -65,6 +65,10 @@ class MediaConfig(BaseModel):
         return str(full_path)
 
 
+class CachingConfig(BaseModel):
+    redis_url: str = env.str('REDIS_URL')
+
+
 class Settings:
     app: AppConfig = AppConfig()
     db: DatabaseConfig = DatabaseConfig()
@@ -72,6 +76,7 @@ class Settings:
     admin: SqlAdminConfig = SqlAdminConfig()
     api_keys: ApiKeysConfig = ApiKeysConfig()
     media: MediaConfig = MediaConfig()
+    caching: CachingConfig = CachingConfig()
 
 
 settings = Settings()

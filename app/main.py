@@ -7,7 +7,7 @@ from sqladmin import Admin
 from app.admin_panel.auth import authentication_backend
 from app.admin_panel.views import UserAdmin, CvAdmin
 from app.core.config import settings
-from app.core.database import database_manager
+from app.core.database import database_manager, redis_manager
 from app.cvs.routers import router as cvs_router
 from app.users.auth.routers import router as auth_router
 from app.users.routers import router as users_router
@@ -16,6 +16,7 @@ from app.users.routers import router as users_router
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     yield
+    await redis_manager.close()
     await database_manager.dispose_engine()
 
 

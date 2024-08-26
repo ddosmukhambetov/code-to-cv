@@ -1,0 +1,17 @@
+services:
+  redis-service:
+    image: redis:7.0-alpine
+    container_name: redis-service
+    ports:
+      - "6379:6379"
+    restart: always
+
+  redis-commander:
+    image: rediscommander/redis-commander
+    container_name: redis-commander
+    environment:
+      - REDIS_HOSTS=local:redis-service:6379
+    ports:
+      - "8081:8081"
+    depends_on:
+      - redis-service

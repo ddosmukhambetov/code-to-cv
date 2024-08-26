@@ -5,9 +5,11 @@ ENV = --env-file .env
 
 APP_FILE = docker_compose/app.yaml
 DB_FILE = docker_compose/db.yaml
+REDIS_FILE = docker_compose/redis.yaml
 
 APP_CONTAINER = app
 DB_CONTAINER = postgres
+REDIS_CONTAINER = redis-service
 
 POSTGRES_USER = user # Change this to your user
 POSTGRES_DB = code_to_cv_db # Change this to your database name
@@ -60,14 +62,18 @@ db-exec:
 db-logs:
 	$(DC) -f $(DB_FILE) $(ENV) logs -f
 
+.PHONY: redis-exec
+redis-exec:
+	$(EXEC) $(REDIS_CONTAINER) redis-cli
+
 .PHONY: all
 all:
-	$(DC) -f $(APP_FILE) -f $(DB_FILE) $(ENV) up --build -d
+	$(DC) -f $(APP_FILE) -f $(DB_FILE) -f $(REDIS_FILE) $(ENV) up --build -d
 
 .PHONY: all-down
 all-down:
-	$(DC) -f $(APP_FILE) -f $(DB_FILE) $(ENV) down --remove-orphans
+	$(DC) -f $(APP_FILE) -f $(DB_FILE) -f $(REDIS_FILE) $(ENV) down --remove-orphans
 
 .PHONY: all-logs
 all-logs:
-	$(DC) -f $(APP_FILE) -f $(DB_FILE) $(ENV) logs -f
+	$(DC) -f $(APP_FILE) -f $(DB_FILE) -f $(REDIS_FILE) $(ENV) logs -f

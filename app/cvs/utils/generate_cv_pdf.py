@@ -6,13 +6,21 @@ from jinja2 import Environment, FileSystemLoader
 from openai import AsyncOpenAI
 from weasyprint import HTML
 
-from app.core.config import settings, BASE_DIR
+from app.core.config import settings
+from app.core.database import redis_manager
 from app.cvs.exceptions import PdfGenerationException, CvDataGenerationException
 from app.cvs.schemas import CvGenerateSchema
 from app.cvs.utils.fetch_data_from_github import collect_user_and_repos_data_from_github
 
 
 async def generate_cv_data(username: str) -> dict:
+    cache_key = f'github_user_data:{username}'
+    if cached_data := await redis_manager.get(cache_key):
+        github_user_data = cached_data
+    else:
+        github_user_data = await collect_user_and_repos_data_from_github(username)
+        await redis_manager.set(cache_key, github_user_data, expire=300)
+
     prompt = """
     You are an expert AI assistant with the capability to generate professional resumes.
     Your task is to create a resume that is well-organized, polished, and written from the first-person perspective.
@@ -22,7 +30,6 @@ async def generate_cv_data(username: str) -> dict:
     and reflects a high standard of quality.
     """
 
-    github_user_data = await collect_user_and_repos_data_from_github(username)
     CvGenerateSchema.PersonalInformation.name = github_user_data.get('name', 'login')
     CvGenerateSchema.PersonalInformation.github_profile_link = github_user_data.get('html_url', '')
 
