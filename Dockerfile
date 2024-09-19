@@ -3,7 +3,7 @@ FROM python:3.12-slim
 ENV PYTHONUNBUFFERED=1
 ENV PYTHONDONTWRITEBYTECODE=1
 
-WORKDIR /app
+WORKDIR /code-to-cv
 
 RUN apt-get update && apt-get install -y python3-dev \
     build-essential \
@@ -17,11 +17,11 @@ RUN apt-get update && apt-get install -y python3-dev \
 RUN pip install --upgrade pip
 RUN pip install poetry
 
-ADD pyproject.toml /app
+ADD pyproject.toml /code-to-cv
 
 RUN poetry config virtualenvs.create false
 RUN poetry install --no-root --no-interaction --no-ansi
 
 EXPOSE 8000
 
-COPY . /app
+COPY . /code-to-cv
